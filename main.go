@@ -43,3 +43,18 @@ func main() {
 		wg.Add(1)
 		go func(idx int, target string) {
 			defer wg.Done()
+			results[idx] = checkURL(client, target)
+		}(i, u)
+	}
+	wg.Wait()
+
+	for _, r := range results {
+		if r.Err != nil {
+			fmt.Printf("[FAIL] %-32s | unreachable (%v)\n", r.URL, r.Err)
+		} else if r.Status != http.StatusOK {
+			fmt.Printf("[WARN] %-32s | status %d (%dms)\n", r.URL, r.Status, r.Elapsed.Milliseconds())
+		} else {
+			fmt.Printf("[ OK ] %-32s | status %d (%dms)\n", r.URL, r.Status, r.Elapsed.Milliseconds())
+		}
+	}
+}

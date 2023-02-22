@@ -4,3 +4,5 @@ learning go goroutines and `sync.WaitGroup` by checking HTTP status and response
 
 ## usage
 ```bash
+go run . https://example.com http://127.0.0.1:8000
+```
